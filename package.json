@@ -1,0 +1,69 @@
+{
+  "name": "node-vikunja",
+  "version": "0.1.0",
+  "description": "Node.js and Deno compatible wrapper for the Vikunja API",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "test": "jest --coverage",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "vikunja",
+    "api",
+    "wrapper",
+    "client",
+    "todo",
+    "task",
+    "management"
+  ],
+  "author": {
+    "name": "Democratize Technology",
+    "email": "hello@democratize.technology",
+    "url": "https://democratize.technology"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/democratize-technology/node-vikunja.git"
+  },
+  "bugs": {
+    "url": "https://github.com/democratize-technology/node-vikunja/issues"
+  },
+  "homepage": "https://github.com/democratize-technology/node-vikunja#readme",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.2",
+    "globals": "^16.1.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^5.0.10",
+    "ts-jest": "^29.3.2",
+    "typescript-eslint": "^8.32.0"
+  }
+}
