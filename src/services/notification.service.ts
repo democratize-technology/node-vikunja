@@ -1,12 +1,12 @@
 /**
  * Notification service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { Message } from '../models/common';
-import { DatabaseNotification } from '../models/misc';
-import { DatabaseNotifications } from '../models/notification';
-import { NotificationListParams } from '../models/request';
-import { convertParams } from '../core/request';
+import { VikunjaService } from '../core/service.js';
+import { Message } from '../models/common.js';
+import { DatabaseNotification } from '../models/misc.js';
+import { DatabaseNotifications } from '../models/notification.js';
+import { NotificationListParams } from '../models/request.js';
+import { convertParams } from '../core/request.js';
 
 /**
  * Handles notification operations with the Vikunja API

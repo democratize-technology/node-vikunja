@@ -1,9 +1,9 @@
 /**
  * Filter service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { Message } from '../models/common';
-import { SavedFilter } from '../models/filter';
+import { VikunjaService } from '../core/service.js';
+import { Message } from '../models/common.js';
+import { SavedFilter } from '../models/filter.js';
 
 /**
  * Handles filter operations with the Vikunja API

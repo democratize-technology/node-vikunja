@@ -1,7 +1,7 @@
 /**
  * Subscription models for Vikunja API
  */
-import { BaseEntity } from './common';
+import { BaseEntity } from './common.js';
 
 /**
  * Valid entity types for subscriptions

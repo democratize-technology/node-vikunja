@@ -1,7 +1,7 @@
 /**
  * Migration-related models for Vikunja API
  */
-import { JSONObject } from './common';
+import { JSONObject } from './common.js';
 
 /**
  * Interface for migration status

@@ -1,7 +1,7 @@
 /**
  * Filter models for Vikunja API
  */
-import { BaseEntity, JSONObject } from './common';
+import { BaseEntity, JSONObject } from './common.js';
 
 /**
  * Represents a saved filter in Vikunja

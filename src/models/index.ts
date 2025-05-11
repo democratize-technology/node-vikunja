@@ -2,22 +2,22 @@
  * Export all models
  */
 
-export * from './common';
-export * from './auth';
-export * from './project';
-export * from './task';
-export * from './label';
-export * from './filter';
-export * from './share';
-export * from './subscription';
-export * from './events';
-export * from './table';
-export * from './settings';
-export * from './user';
+export * from './common.js';
+export * from './auth.js';
+export * from './project.js';
+export * from './task.js';
+export * from './label.js';
+export * from './filter.js';
+export * from './share.js';
+export * from './subscription.js';
+export * from './events.js';
+export * from './table.js';
+export * from './settings.js';
+export * from './user.js';
 // Re-export specific types from background to avoid conflict with project.ts
-export { UnsplashBackgroundImage, BackgroundSearchParams } from './background';
-export * from './misc';
-export * from './request';
-export * from './system';
-export * from './notification';
-export * from './migration';
+export { UnsplashBackgroundImage, BackgroundSearchParams } from './background.js';
+export * from './misc.js';
+export * from './request.js';
+export * from './system.js';
+export * from './notification.js';
+export * from './migration.js';

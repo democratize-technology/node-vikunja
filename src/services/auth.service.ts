@@ -1,8 +1,8 @@
 /**
  * Authentication service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { AuthToken, LoginCredentials, OpenIDCallback, User, UserCreation } from '../models/auth';
+import { VikunjaService } from '../core/service.js';
+import { AuthToken, LoginCredentials, OpenIDCallback, User, UserCreation } from '../models/auth.js';
 
 /**
  * Handles authentication with the Vikunja API

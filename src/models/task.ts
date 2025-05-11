@@ -1,8 +1,8 @@
 /**
  * Task related interfaces
  */
-import { BaseEntity } from './common';
-import { Label } from './label';
+import { BaseEntity } from './common.js';
+import { Label } from './label.js';
 
 /**
  * Task entity

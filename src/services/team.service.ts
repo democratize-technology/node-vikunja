@@ -1,10 +1,10 @@
 /**
  * Team service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { Team } from '../models/misc';
-import { TeamListParams } from '../models/request';
-import { convertParams } from '../core/request';
+import { VikunjaService } from '../core/service.js';
+import { Team } from '../models/misc.js';
+import { TeamListParams } from '../models/request.js';
+import { convertParams } from '../core/request.js';
 
 /**
  * Handles team operations with the Vikunja API

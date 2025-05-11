@@ -1,8 +1,8 @@
 /**
  * Project related interfaces
  */
-import { BaseEntity } from './common';
-import { Task } from './task';
+import { BaseEntity } from './common.js';
+import { Task } from './task.js';
 
 /**
  * Project entity

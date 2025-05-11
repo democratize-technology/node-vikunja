@@ -1,7 +1,7 @@
 /**
  * Notification related interfaces
  */
-import { BaseEntity } from './common';
+import { BaseEntity } from './common.js';
 
 /**
  * Individual database notification

@@ -1,8 +1,8 @@
 /**
  * Base service class for all Vikunja API services
  */
-import { HttpMethod, ApiError, RequestOptions, RequestParams } from './types';
-import { buildQueryString } from './request';
+import { HttpMethod, ApiError, RequestOptions, RequestParams } from './types.js';
+import { buildQueryString } from './request.js';
 
 /**
  * Custom error class for Vikunja API errors

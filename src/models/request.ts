@@ -1,7 +1,7 @@
 /**
  * Common request parameter interfaces
  */
-import { Pagination, SearchParams } from './common';
+import { Pagination, SearchParams } from './common.js';
 
 /**
  * Parameters for project list requests

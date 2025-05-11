@@ -1,7 +1,7 @@
 /**
  * Authentication related interfaces
  */
-import { BaseEntity } from './common';
+import { BaseEntity } from './common.js';
 
 /**
  * Login credentials for authentication

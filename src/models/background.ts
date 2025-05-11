@@ -1,7 +1,7 @@
 /**
  * Unsplash background image models
  */
-import { BaseEntity, JSONObject } from './common';
+import { BaseEntity, JSONObject } from './common.js';
 
 /**
  * Unsplash image information

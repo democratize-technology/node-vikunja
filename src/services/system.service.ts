@@ -1,8 +1,8 @@
 /**
  * System service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { VikunjaInfo } from '../models/system';
+import { VikunjaService } from '../core/service.js';
+import { VikunjaInfo } from '../models/system.js';
 
 /**
  * Handles system information operations with the Vikunja API

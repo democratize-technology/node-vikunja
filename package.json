@@ -1,6 +1,7 @@
 {
+  "type": "module",
   "name": "node-vikunja",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Node.js and Deno compatible wrapper for the Vikunja API",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -8,7 +9,8 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
     }
   },
   "files": [

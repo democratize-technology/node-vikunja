@@ -1,7 +1,7 @@
 /**
  * Models for user settings
  */
-import { BaseEntity, JSONObject } from './common';
+import { BaseEntity, JSONObject } from './common.js';
 
 /**
  * Avatar provider types

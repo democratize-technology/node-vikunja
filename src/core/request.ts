@@ -1,7 +1,7 @@
 /**
  * Request utility module for converting typed request parameters to API compatible parameters
  */
-import { RequestParams } from './types';
+import { RequestParams } from './types.js';
 
 /**
  * Convert strongly-typed request parameters to a format compatible with the API request function

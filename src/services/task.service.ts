@@ -1,10 +1,10 @@
 /**
  * Task service for Vikunja API
  */
-import { convertParams } from '../core/request';
-import { VikunjaService, VikunjaError } from '../core/service';
-import { FilterParams, Message, Pagination, SearchParams, SortParams } from '../models/common';
-import { TaskLabel, Label, GetTaskLabelsParams } from '../models/label';
+import { convertParams } from '../core/request.js';
+import { VikunjaService, VikunjaError } from '../core/service.js';
+import { FilterParams, Message, Pagination, SearchParams, SortParams } from '../models/common.js';
+import { TaskLabel, Label, GetTaskLabelsParams } from '../models/label.js';
 import {
   Task,
   TaskAssignment,
@@ -16,7 +16,7 @@ import {
   LabelTaskBulk,
   RelationKind,
   TaskAttachment,
-} from '../models/task';
+} from '../models/task.js';
 
 /**
  * Parameters for getting tasks

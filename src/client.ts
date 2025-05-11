@@ -4,23 +4,23 @@
  * Copyright (c) 2025 Democratize Technology
  */
 
-import { AuthService } from './services/auth.service';
-import { AvatarService } from './services/avatar.service';
-import { EventsService } from './services/events.service';
-import { FilterService } from './services/filter.service';
-import { LabelService } from './services/label.service';
-import { MigrationService } from './services/migration.service';
-import { NotificationService } from './services/notification.service';
-import { ProjectService } from './services/project.service';
-import { ShareService } from './services/share.service';
-import { SubscriptionService } from './services/subscription.service';
-import { SystemService } from './services/system.service';
-import { TableService } from './services/table.service';
-import { TaskService } from './services/task.service';
-import { TeamService } from './services/team.service';
-import { TokenService } from './services/token.service';
-import { UserService } from './services/user.service';
-import { AuthToken, LoginCredentials } from './models/auth';
+import { AuthService } from './services/auth.service.js';
+import { AvatarService } from './services/avatar.service.js';
+import { EventsService } from './services/events.service.js';
+import { FilterService } from './services/filter.service.js';
+import { LabelService } from './services/label.service.js';
+import { MigrationService } from './services/migration.service.js';
+import { NotificationService } from './services/notification.service.js';
+import { ProjectService } from './services/project.service.js';
+import { ShareService } from './services/share.service.js';
+import { SubscriptionService } from './services/subscription.service.js';
+import { SystemService } from './services/system.service.js';
+import { TableService } from './services/table.service.js';
+import { TaskService } from './services/task.service.js';
+import { TeamService } from './services/team.service.js';
+import { TokenService } from './services/token.service.js';
+import { UserService } from './services/user.service.js';
+import { AuthToken, LoginCredentials } from './models/auth.js';
 
 /**
  * Main client for interacting with the Vikunja API

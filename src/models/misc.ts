@@ -1,7 +1,7 @@
 /**
  * Miscellaneous domain interfaces
  */
-import { BaseEntity } from './common';
+import { BaseEntity } from './common.js';
 
 /**
  * Team entity

@@ -1,7 +1,7 @@
 /**
  * Types and interfaces for project sharing functionality
  */
-import { BaseEntity, Pagination, SearchParams } from './common';
+import { BaseEntity, Pagination, SearchParams } from './common.js';
 
 /**
  * Sharing type enumeration

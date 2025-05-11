@@ -1,9 +1,9 @@
 /**
  * Project service for Vikunja API
  */
-import { VikunjaService, VikunjaError } from '../core/service';
-import { LinkSharing, GetLinkSharesParams } from '../models/share';
-import { Message, Pagination, SearchParams } from '../models/common';
+import { VikunjaService, VikunjaError } from '../core/service.js';
+import { LinkSharing, GetLinkSharesParams } from '../models/share.js';
+import { Message, Pagination, SearchParams } from '../models/common.js';
 import {
   Bucket,
   Project,
@@ -12,14 +12,14 @@ import {
   TeamProject,
   TeamWithRight,
   UserWithRight,
-} from '../models/project';
+} from '../models/project.js';
 import {
   BackgroundImage,
   UnsplashBackgroundImage,
   BackgroundSearchParams,
-} from '../models/background';
-import { ProjectListParams } from '../models/request';
-import { convertParams } from '../core/request';
+} from '../models/background.js';
+import { ProjectListParams } from '../models/request.js';
+import { convertParams } from '../core/request.js';
 
 /**
  * Handles project operations with the Vikunja API

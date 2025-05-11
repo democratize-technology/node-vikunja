@@ -1,10 +1,10 @@
 /**
  * User service for Vikunja API
  */
-import { VikunjaService, VikunjaError } from '../core/service';
-import { User } from '../models/auth';
-import { UserSearchParams } from '../models/request';
-import { Message } from '../models/common';
+import { VikunjaService, VikunjaError } from '../core/service.js';
+import { User } from '../models/auth.js';
+import { UserSearchParams } from '../models/request.js';
+import { Message } from '../models/common.js';
 import {
   EmailConfirm,
   UserPasswordConfirmation,
@@ -12,7 +12,7 @@ import {
   UserPassword,
   PasswordReset,
   PasswordTokenRequest,
-} from '../models/user';
+} from '../models/user.js';
 import {
   UserAvatarProvider,
   UserSettings,
@@ -21,8 +21,8 @@ import {
   TOTP,
   TOTPPasscode,
   Login,
-} from '../models/settings';
-import { convertParams } from '../core/request';
+} from '../models/settings.js';
+import { convertParams } from '../core/request.js';
 
 /**
  * Handles user operations with the Vikunja API

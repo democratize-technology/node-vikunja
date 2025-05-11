@@ -1,7 +1,7 @@
 /**
  * Avatar service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
+import { VikunjaService } from '../core/service.js';
 
 /**
  * Handles user avatar operations with the Vikunja API

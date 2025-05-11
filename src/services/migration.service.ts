@@ -1,15 +1,15 @@
 /**
  * Migration service for Vikunja API
  */
-import { VikunjaService, VikunjaError } from '../core/service';
-import { Message } from '../models/common';
+import { VikunjaService, VikunjaError } from '../core/service.js';
+import { Message } from '../models/common.js';
 import {
   AuthURL,
   MigrationStatus,
   TodoistMigration,
   MicrosoftTodoMigration,
   TrelloMigration,
-} from '../models/migration';
+} from '../models/migration.js';
 
 /**
  * Handles migration operations with the Vikunja API

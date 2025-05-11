@@ -1,7 +1,7 @@
 /**
  * Model definitions for the Table domain
  */
-import { BaseEntity } from './common';
+import { BaseEntity } from './common.js';
 
 /**
  * User model as defined in the Swagger spec for table reset operations

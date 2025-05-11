@@ -1,11 +1,11 @@
 /**
  * Token service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { APIToken, APITokenRoute } from '../models/misc';
-import { TokenListParams } from '../models/request';
-import { convertParams } from '../core/request';
-import { Message } from '../models/common';
+import { VikunjaService } from '../core/service.js';
+import { APIToken, APITokenRoute } from '../models/misc.js';
+import { TokenListParams } from '../models/request.js';
+import { convertParams } from '../core/request.js';
+import { Message } from '../models/common.js';
 
 /**
  * Handles token operations with the Vikunja API

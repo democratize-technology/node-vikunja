@@ -1,8 +1,8 @@
 /**
  * Subscription service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { Subscription, SubscriptionEntityType } from '../models/subscription';
+import { VikunjaService } from '../core/service.js';
+import { Subscription, SubscriptionEntityType } from '../models/subscription.js';
 
 /**
  * Service for managing entity subscriptions

@@ -5,15 +5,15 @@
  */
 
 // Export the main client class
-export * from './client';
+export * from './client.js';
 
 // Export everything from models
-export * from './models';
+export * from './models/index.js';
 
 // Export core components
-export * from './core/service';
-export * from './core/request';
-export * from './core/types';
+export * from './core/service.js';
+export * from './core/request.js';
+export * from './core/types.js';
 
 // Export all services
-export * from './services';
+export * from './services/index.js';

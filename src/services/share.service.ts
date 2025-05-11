@@ -1,9 +1,9 @@
 /**
  * Share service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { LinkShareAuth } from '../models/share';
-import { AuthToken } from '../models/auth';
+import { VikunjaService } from '../core/service.js';
+import { LinkShareAuth } from '../models/share.js';
+import { AuthToken } from '../models/auth.js';
 
 /**
  * Service for managing project link shares

@@ -1,8 +1,8 @@
 /**
  * Events service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { WebhookEvent } from '../models/events';
+import { VikunjaService } from '../core/service.js';
+import { WebhookEvent } from '../models/events.js';
 
 /**
  * Handles webhook events operations with the Vikunja API

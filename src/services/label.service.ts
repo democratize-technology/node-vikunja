@@ -1,11 +1,11 @@
 /**
  * Label service for Vikunja API
  */
-import { VikunjaService } from '../core/service';
-import { Message } from '../models/common';
-import { Label } from '../models/label';
-import { LabelListParams } from '../models/request';
-import { convertParams } from '../core/request';
+import { VikunjaService } from '../core/service.js';
+import { Message } from '../models/common.js';
+import { Label } from '../models/label.js';
+import { LabelListParams } from '../models/request.js';
+import { convertParams } from '../core/request.js';
 
 /**
  * Handles label operations with the Vikunja API

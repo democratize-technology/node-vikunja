@@ -2,8 +2,8 @@
  * Service for managing database tables in test mode
  * This service implements the {table} domain endpoints
  */
-import { VikunjaService } from '../core/service';
-import { TableUser } from '../models/table';
+import { VikunjaService } from '../core/service.js';
+import { TableUser } from '../models/table.js';
 
 /**
  * Service for managing testing-related operations with database tables

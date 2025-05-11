@@ -1,7 +1,7 @@
 /**
  * Label related interfaces
  */
-import { BaseEntity, Pagination } from './common';
+import { BaseEntity, Pagination } from './common.js';
 
 /**
  * Label entity
