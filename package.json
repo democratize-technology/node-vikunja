@@ -50,8 +50,7 @@
   },
   "homepage": "https://github.com/democratize-technology/node-vikunja#readme",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@types/node": "^22.15.3",
