@@ -1,6 +1,6 @@
 {
   "name": "node-vikunja",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Node.js and Deno compatible wrapper for the Vikunja API",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -49,11 +49,10 @@
   "homepage": "https://github.com/democratize-technology/node-vikunja#readme",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^22.15.3",
-    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
+    "@types/node": "^22.15.3",
     "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
@@ -64,6 +63,7 @@
     "prettier": "^3.5.3",
     "rimraf": "^5.0.10",
     "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.0"
   }
 }
