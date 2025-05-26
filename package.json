@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "node-vikunja",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Node.js and Deno compatible wrapper for the Vikunja API",
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
