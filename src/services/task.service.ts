@@ -2,7 +2,7 @@
  * Task service for Vikunja API
  */
 import { convertParams } from '../core/request.js';
-import { VikunjaService, VikunjaError } from '../core/service.js';
+import { VikunjaService, VikunjaError, LabelAuthenticationError } from '../core/service.js';
 import { FilterParams, Message, Pagination, SearchParams, SortParams } from '../models/common.js';
 import { TaskLabel, Label, GetTaskLabelsParams } from '../models/label.js';
 import {
@@ -228,9 +228,58 @@ export class TaskService extends VikunjaService {
    * @param taskId - Task ID
    * @param labels - Bulk label operation data
    * @returns Label update result
+   * 
+   * @remarks
+   * This method includes retry logic to handle cases where label operations
+   * may fail with authentication errors even with valid tokens. The method will:
+   * 1. First try the standard approach with the normal authorization header
+   * 2. On 401/403 errors, retry with alternative authentication headers
+   * 3. On continued failure, throw a LabelAuthenticationError
    */
   async updateTaskLabels(taskId: number, labels: LabelTaskBulk): Promise<LabelTaskBulk> {
-    return this.request<LabelTaskBulk>(`/tasks/${taskId}/labels/bulk`, 'POST', labels);
+    try {
+      // First attempt with standard authentication
+      return await this.request<LabelTaskBulk>(`/tasks/${taskId}/labels/bulk`, 'POST', labels);
+    } catch (error) {
+      // Check if this is an authentication error (401 or 403)
+      if (error instanceof VikunjaError && (error.status === 401 || error.status === 403)) {
+        // Retry with alternative headers
+        try {
+          // Retry with X-API-Token header instead of Authorization Bearer
+          return await this.request<LabelTaskBulk>(`/tasks/${taskId}/labels/bulk`, 'POST', labels, {
+            headers: {
+              'X-API-Token': this.token || '',
+            },
+          });
+        } catch (retryError) {
+          // If still failing, try one more time with lowercase authorization header
+          if (retryError instanceof VikunjaError && (retryError.status === 401 || retryError.status === 403)) {
+            try {
+              return await this.request<LabelTaskBulk>(`/tasks/${taskId}/labels/bulk`, 'POST', labels, {
+                headers: {
+                  'authorization': `Bearer ${this.token}`,
+                },
+              });
+            } catch (finalError) {
+              // All attempts failed - throw specific error
+              if (finalError instanceof VikunjaError && (finalError.status === 401 || finalError.status === 403)) {
+                throw new LabelAuthenticationError(
+                  `Label operation failed due to authentication issue. ` +
+                  `This may occur even with valid tokens. ` +
+                  `Original error: ${finalError.message}`,
+                  finalError.code,
+                  finalError.status
+                );
+              }
+              throw finalError;
+            }
+          }
+          throw retryError;
+        }
+      }
+      // Re-throw non-authentication errors
+      throw error;
+    }
   }
 
   /**
@@ -402,9 +451,45 @@ export class TaskService extends VikunjaService {
    * @param taskId - Task ID
    * @param labelTask - Label task data
    * @returns Created task label relation
+   * 
+   * @remarks
+   * This method includes retry logic to handle cases where label operations
+   * may fail with authentication errors even with valid tokens.
    */
   async addLabelToTask(taskId: number, labelTask: TaskLabel): Promise<TaskLabel> {
-    return this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask);
+    try {
+      return await this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask);
+    } catch (error) {
+      if (error instanceof VikunjaError && (error.status === 401 || error.status === 403)) {
+        // Retry with alternative authentication methods
+        try {
+          return await this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask, {
+            headers: { 'X-API-Token': this.token || '' },
+          });
+        } catch (retryError) {
+          if (retryError instanceof VikunjaError && (retryError.status === 401 || retryError.status === 403)) {
+            try {
+              return await this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask, {
+                headers: { 'authorization': `Bearer ${this.token}` },
+              });
+            } catch (finalError) {
+              if (finalError instanceof VikunjaError && (finalError.status === 401 || finalError.status === 403)) {
+                throw new LabelAuthenticationError(
+                  `Label operation failed due to authentication issue. ` +
+                  `This may occur even with valid tokens. ` +
+                  `Original error: ${finalError.message}`,
+                  finalError.code,
+                  finalError.status
+                );
+              }
+              throw finalError;
+            }
+          }
+          throw retryError;
+        }
+      }
+      throw error;
+    }
   }
 
   /**
@@ -413,8 +498,44 @@ export class TaskService extends VikunjaService {
    * @param taskId - Task ID
    * @param labelId - Label ID
    * @returns Success message
+   * 
+   * @remarks
+   * This method includes retry logic to handle cases where label operations
+   * may fail with authentication errors even with valid tokens.
    */
   async removeLabelFromTask(taskId: number, labelId: number): Promise<Message> {
-    return this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE');
+    try {
+      return await this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE');
+    } catch (error) {
+      if (error instanceof VikunjaError && (error.status === 401 || error.status === 403)) {
+        // Retry with alternative authentication methods
+        try {
+          return await this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE', undefined, {
+            headers: { 'X-API-Token': this.token || '' },
+          });
+        } catch (retryError) {
+          if (retryError instanceof VikunjaError && (retryError.status === 401 || retryError.status === 403)) {
+            try {
+              return await this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE', undefined, {
+                headers: { 'authorization': `Bearer ${this.token}` },
+              });
+            } catch (finalError) {
+              if (finalError instanceof VikunjaError && (finalError.status === 401 || finalError.status === 403)) {
+                throw new LabelAuthenticationError(
+                  `Label operation failed due to authentication issue. ` +
+                  `This may occur even with valid tokens. ` +
+                  `Original error: ${finalError.message}`,
+                  finalError.code,
+                  finalError.status
+                );
+              }
+              throw finalError;
+            }
+          }
+          throw retryError;
+        }
+      }
+      throw error;
+    }
   }
 }

@@ -20,6 +20,17 @@ export class VikunjaError extends Error {
 }
 
 /**
+ * Error specific to label authentication failures
+ * Label operations may fail with auth errors even with valid tokens
+ */
+export class LabelAuthenticationError extends VikunjaError {
+  constructor(message: string, code: number, status: number) {
+    super(message, code, status);
+    this.name = 'LabelAuthenticationError';
+  }
+}
+
+/**
  * Base class for all Vikunja service implementations
  */
 export abstract class VikunjaService {
