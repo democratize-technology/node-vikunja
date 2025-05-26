@@ -141,8 +141,8 @@ describe('TaskService - Assignees', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });
@@ -219,8 +219,8 @@ describe('TaskService - Assignees', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
@@ -301,8 +301,8 @@ describe('TaskService - Assignees', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
@@ -375,10 +375,12 @@ describe('TaskService - Assignees', () => {
         await taskService.removeUserFromTask(taskId, userId);
         fail('Expected an error to be thrown');
       } catch (error) {
+        // Should be AssigneeAuthenticationError due to retry logic on 403
         expect(error).toBeInstanceOf(VikunjaError);
-        expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(403);
+        expect((error as VikunjaError).message).toContain('Assignee operation failed due to authentication issue');
+        expect((error as VikunjaError).message).toContain(errorResponse.message);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(403);
       }
     });
   });

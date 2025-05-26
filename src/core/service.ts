@@ -33,6 +33,17 @@ export class LabelAuthenticationError extends VikunjaAuthenticationError {
 }
 
 /**
+ * Error specific to assignee authentication failures
+ * Assignee operations may fail with auth errors even with valid tokens
+ */
+export class AssigneeAuthenticationError extends VikunjaAuthenticationError {
+  constructor(message: string, endpoint: string, method: string, statusCode: number, response: ErrorResponse) {
+    super(message, endpoint, method, statusCode, response);
+    this.name = 'AssigneeAuthenticationError';
+  }
+}
+
+/**
  * Base class for all Vikunja service implementations
  */
 export abstract class VikunjaService {

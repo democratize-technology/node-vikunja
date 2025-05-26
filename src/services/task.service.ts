@@ -2,7 +2,7 @@
  * Task service for Vikunja API
  */
 import { convertParams } from '../core/request.js';
-import { VikunjaService, VikunjaError, VikunjaAuthenticationError, LabelAuthenticationError } from '../core/service.js';
+import { VikunjaService, VikunjaError, VikunjaAuthenticationError, LabelAuthenticationError, AssigneeAuthenticationError } from '../core/service.js';
 import type { ErrorResponse } from '../core/errors.js';
 import { FilterParams, Message, Pagination, SearchParams, SortParams } from '../models/common.js';
 import { TaskLabel, Label, GetTaskLabelsParams } from '../models/label.js';
@@ -138,9 +138,60 @@ export class TaskService extends VikunjaService {
    * @param taskId - Task ID
    * @param userId - User ID
    * @returns Task assignment
+   * 
+   * @remarks
+   * This method includes retry logic to handle cases where assignee operations
+   * may fail with authentication errors even with valid tokens. The method will:
+   * 1. First try the standard approach with the normal authorization header
+   * 2. On 401/403 errors, retry with alternative authentication headers
+   * 3. On continued failure, throw an AssigneeAuthenticationError
    */
   async assignUserToTask(taskId: number, userId: number): Promise<TaskAssignment> {
-    return this.request<TaskAssignment>(`/tasks/${taskId}/assignees`, 'PUT', { user_id: userId });
+    try {
+      // First attempt with standard authentication
+      return await this.request<TaskAssignment>(`/tasks/${taskId}/assignees`, 'PUT', { user_id: userId });
+    } catch (error) {
+      // Check if this is an authentication error (401 or 403)
+      if (error instanceof VikunjaError && (error.statusCode === 401 || error.statusCode === 403)) {
+        // Retry with alternative headers
+        try {
+          // Retry with X-API-Token header instead of Authorization Bearer
+          return await this.request<TaskAssignment>(`/tasks/${taskId}/assignees`, 'PUT', { user_id: userId }, {
+            headers: {
+              'X-API-Token': this.token || '',
+            },
+          });
+        } catch (retryError) {
+          // If still failing, try one more time with lowercase authorization header
+          if (retryError instanceof VikunjaError && (retryError.statusCode === 401 || retryError.statusCode === 403)) {
+            try {
+              return await this.request<TaskAssignment>(`/tasks/${taskId}/assignees`, 'PUT', { user_id: userId }, {
+                headers: {
+                  'authorization': `Bearer ${this.token}`,
+                },
+              });
+            } catch (finalError) {
+              // All attempts failed - throw specific error
+              if (finalError instanceof VikunjaAuthenticationError) {
+                throw new AssigneeAuthenticationError(
+                  `Assignee operation failed due to authentication issue. ` +
+                  `This may occur even with valid tokens. ` +
+                  `Original error: ${finalError.message}`,
+                  finalError.endpoint,
+                  finalError.method,
+                  finalError.statusCode,
+                  finalError.response
+                );
+              }
+              throw finalError;
+            }
+          }
+          throw retryError;
+        }
+      }
+      // Re-throw non-authentication errors
+      throw error;
+    }
   }
 
   /**
@@ -149,9 +200,57 @@ export class TaskService extends VikunjaService {
    * @param taskId - Task ID
    * @param assignees - Bulk assignees data with user IDs
    * @returns Task assignment result
+   * 
+   * @remarks
+   * This method includes retry logic to handle cases where assignee operations
+   * may fail with authentication errors even with valid tokens.
    */
   async bulkAssignUsersToTask(taskId: number, assignees: BulkAssignees): Promise<TaskAssignment> {
-    return this.request<TaskAssignment>(`/tasks/${taskId}/assignees/bulk`, 'POST', assignees);
+    try {
+      // First attempt with standard authentication
+      return await this.request<TaskAssignment>(`/tasks/${taskId}/assignees/bulk`, 'POST', assignees);
+    } catch (error) {
+      // Check if this is an authentication error (401 or 403)
+      if (error instanceof VikunjaError && (error.statusCode === 401 || error.statusCode === 403)) {
+        // Retry with alternative headers
+        try {
+          // Retry with X-API-Token header instead of Authorization Bearer
+          return await this.request<TaskAssignment>(`/tasks/${taskId}/assignees/bulk`, 'POST', assignees, {
+            headers: {
+              'X-API-Token': this.token || '',
+            },
+          });
+        } catch (retryError) {
+          // If still failing, try one more time with lowercase authorization header
+          if (retryError instanceof VikunjaError && (retryError.statusCode === 401 || retryError.statusCode === 403)) {
+            try {
+              return await this.request<TaskAssignment>(`/tasks/${taskId}/assignees/bulk`, 'POST', assignees, {
+                headers: {
+                  'authorization': `Bearer ${this.token}`,
+                },
+              });
+            } catch (finalError) {
+              // All attempts failed - throw specific error
+              if (finalError instanceof VikunjaAuthenticationError) {
+                throw new AssigneeAuthenticationError(
+                  `Assignee operation failed due to authentication issue. ` +
+                  `This may occur even with valid tokens. ` +
+                  `Original error: ${finalError.message}`,
+                  finalError.endpoint,
+                  finalError.method,
+                  finalError.statusCode,
+                  finalError.response
+                );
+              }
+              throw finalError;
+            }
+          }
+          throw retryError;
+        }
+      }
+      // Re-throw non-authentication errors
+      throw error;
+    }
   }
 
   /**
@@ -160,9 +259,57 @@ export class TaskService extends VikunjaService {
    * @param taskId - Task ID
    * @param userId - User ID
    * @returns Success message
+   * 
+   * @remarks
+   * This method includes retry logic to handle cases where assignee operations
+   * may fail with authentication errors even with valid tokens.
    */
   async removeUserFromTask(taskId: number, userId: number): Promise<Message> {
-    return this.request<Message>(`/tasks/${taskId}/assignees/${userId}`, 'DELETE');
+    try {
+      // First attempt with standard authentication
+      return await this.request<Message>(`/tasks/${taskId}/assignees/${userId}`, 'DELETE');
+    } catch (error) {
+      // Check if this is an authentication error (401 or 403)
+      if (error instanceof VikunjaError && (error.statusCode === 401 || error.statusCode === 403)) {
+        // Retry with alternative headers
+        try {
+          // Retry with X-API-Token header instead of Authorization Bearer
+          return await this.request<Message>(`/tasks/${taskId}/assignees/${userId}`, 'DELETE', undefined, {
+            headers: {
+              'X-API-Token': this.token || '',
+            },
+          });
+        } catch (retryError) {
+          // If still failing, try one more time with lowercase authorization header
+          if (retryError instanceof VikunjaError && (retryError.statusCode === 401 || retryError.statusCode === 403)) {
+            try {
+              return await this.request<Message>(`/tasks/${taskId}/assignees/${userId}`, 'DELETE', undefined, {
+                headers: {
+                  'authorization': `Bearer ${this.token}`,
+                },
+              });
+            } catch (finalError) {
+              // All attempts failed - throw specific error
+              if (finalError instanceof VikunjaAuthenticationError) {
+                throw new AssigneeAuthenticationError(
+                  `Assignee operation failed due to authentication issue. ` +
+                  `This may occur even with valid tokens. ` +
+                  `Original error: ${finalError.message}`,
+                  finalError.endpoint,
+                  finalError.method,
+                  finalError.statusCode,
+                  finalError.response
+                );
+              }
+              throw finalError;
+            }
+          }
+          throw retryError;
+        }
+      }
+      // Re-throw non-authentication errors
+      throw error;
+    }
   }
 
   /**
