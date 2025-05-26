@@ -266,11 +266,11 @@ export class TaskService extends VikunjaService {
   /**
    * Bulk update tasks
    *
-   * @param operation - Bulk operation data
-   * @returns Success message
+   * @param operation - Bulk operation data with task_ids, field, and value
+   * @returns Array of updated tasks
    */
-  async bulkUpdateTasks(operation: TaskBulkOperation): Promise<Message> {
-    return this.request<Message>('/tasks/bulk', 'POST', operation);
+  async bulkUpdateTasks(operation: TaskBulkOperation): Promise<Task[]> {
+    return this.request<Task[]>('/tasks/bulk', 'POST', operation);
   }
 
   /**

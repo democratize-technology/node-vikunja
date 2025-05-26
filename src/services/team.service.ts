@@ -29,4 +29,14 @@ export class TeamService extends VikunjaService {
   async createTeam(team: Team): Promise<Team> {
     return this.request<Team>('/teams', 'PUT', team);
   }
+
+  /**
+   * Delete a team
+   *
+   * @param teamId - ID of the team to delete
+   * @returns Success message
+   */
+  async deleteTeam(teamId: number): Promise<{ message: string }> {
+    return this.request<{ message: string }>(`/teams/${teamId}`, 'DELETE');
+  }
 }

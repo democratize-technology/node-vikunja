@@ -191,4 +191,73 @@ describe('TeamService', () => {
       });
     });
   });
+  
+  describe('deleteTeam', () => {
+    it('should delete a team', async () => {
+      // Mock response
+      const mockResponse = {
+        message: 'The team was successfully deleted.'
+      };
+      
+      // Mock the fetch response
+      const mockFetchResponse = {
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: jest.fn().mockResolvedValue(mockResponse),
+        headers: new Headers({
+          'content-type': 'application/json',
+        })
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValue(mockFetchResponse);
+      
+      // Call the service
+      const result = await service.deleteTeam(3);
+      
+      // Verify request
+      expect(global.fetch).toHaveBeenCalledWith(
+        `${mockBaseUrl}/teams/3`,
+        expect.objectContaining({
+          method: 'DELETE',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${mockToken}`
+          })
+        })
+      );
+      
+      // Verify response
+      expect(result).toEqual(mockResponse);
+    });
+    
+    it('should handle not found errors', async () => {
+      // Error response
+      const errorResponse = {
+        code: 404,
+        message: 'Team not found'
+      };
+      
+      // Mock the fetch response with an error
+      const mockResponse = {
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: jest.fn().mockResolvedValue(errorResponse),
+        headers: new Headers({
+          'content-type': 'application/json',
+        })
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+      
+      // Call the method and expect it to throw
+      await expect(service.deleteTeam(999)).rejects.toThrow(VikunjaError);
+      await expect(service.deleteTeam(999)).rejects.toMatchObject({
+        message: errorResponse.message,
+        code: errorResponse.code,
+        status: 404
+      });
+    });
+  });
 });
