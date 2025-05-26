@@ -259,5 +259,92 @@ describe('TeamService', () => {
         status: 404
       });
     });
+    
+    it('should handle permission errors', async () => {
+      // Error response
+      const errorResponse = {
+        code: 403,
+        message: 'You do not have permission to delete this team'
+      };
+      
+      // Mock the fetch response with an error
+      const mockResponse = {
+        ok: false,
+        status: 403,
+        statusText: 'Forbidden',
+        json: jest.fn().mockResolvedValue(errorResponse),
+        headers: new Headers({
+          'content-type': 'application/json',
+        })
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+      
+      // Call the method and expect it to throw
+      await expect(service.deleteTeam(1)).rejects.toThrow(VikunjaError);
+      await expect(service.deleteTeam(1)).rejects.toMatchObject({
+        message: errorResponse.message,
+        code: errorResponse.code,
+        status: 403
+      });
+    });
+    
+    it('should handle bad request errors', async () => {
+      // Error response for invalid team ID format
+      const errorResponse = {
+        code: 400,
+        message: 'Invalid team ID'
+      };
+      
+      // Mock the fetch response with an error
+      const mockResponse = {
+        ok: false,
+        status: 400,
+        statusText: 'Bad Request',
+        json: jest.fn().mockResolvedValue(errorResponse),
+        headers: new Headers({
+          'content-type': 'application/json',
+        })
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+      
+      // Call the method and expect it to throw
+      await expect(service.deleteTeam(-1)).rejects.toThrow(VikunjaError);
+      await expect(service.deleteTeam(-1)).rejects.toMatchObject({
+        message: errorResponse.message,
+        code: errorResponse.code,
+        status: 400
+      });
+    });
+    
+    it('should handle conflict errors when team has active projects', async () => {
+      // Error response for team with dependencies
+      const errorResponse = {
+        code: 409,
+        message: 'Cannot delete team: team has active projects'
+      };
+      
+      // Mock the fetch response with an error
+      const mockResponse = {
+        ok: false,
+        status: 409,
+        statusText: 'Conflict',
+        json: jest.fn().mockResolvedValue(errorResponse),
+        headers: new Headers({
+          'content-type': 'application/json',
+        })
+      };
+      
+      (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+      
+      // Call the method and expect it to throw
+      await expect(service.deleteTeam(2)).rejects.toThrow(VikunjaError);
+      await expect(service.deleteTeam(2)).rejects.toMatchObject({
+        message: errorResponse.message,
+        code: errorResponse.code,
+        status: 409
+      });
+    });
   });
 });

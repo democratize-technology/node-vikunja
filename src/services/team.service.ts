@@ -5,6 +5,7 @@ import { VikunjaService } from '../core/service.js';
 import { Team } from '../models/misc.js';
 import { TeamListParams } from '../models/request.js';
 import { convertParams } from '../core/request.js';
+import { Message } from '../models/common.js';
 
 /**
  * Handles team operations with the Vikunja API
@@ -36,7 +37,7 @@ export class TeamService extends VikunjaService {
    * @param teamId - ID of the team to delete
    * @returns Success message
    */
-  async deleteTeam(teamId: number): Promise<{ message: string }> {
-    return this.request<{ message: string }>(`/teams/${teamId}`, 'DELETE');
+  async deleteTeam(teamId: number): Promise<Message> {
+    return this.request<Message>(`/teams/${teamId}`, 'DELETE');
   }
 }
