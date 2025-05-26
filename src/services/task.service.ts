@@ -17,6 +17,7 @@ import {
   RelationKind,
   TaskAttachment,
 } from '../models/task.js';
+import { User } from '../models/auth.js';
 
 /**
  * Parameters for getting tasks
@@ -124,8 +125,8 @@ export class TaskService extends VikunjaService {
   async getTaskAssignees(
     taskId: number,
     params?: { page?: number; per_page?: number; s?: string }
-  ): Promise<unknown[]> {
-    return this.request<unknown[]>(`/tasks/${taskId}/assignees`, 'GET', undefined, {
+  ): Promise<User[]> {
+    return this.request<User[]>(`/tasks/${taskId}/assignees`, 'GET', undefined, {
       params: params as Record<string, string | number | boolean | undefined>,
     });
   }
@@ -313,7 +314,7 @@ export class TaskService extends VikunjaService {
   }
 
   /**
-   * Bulk update tasks
+   * Bulk update multiple tasks with the same field value
    *
    * @param operation - Bulk operation data with task_ids, field, and value
    * @returns Array of updated tasks
