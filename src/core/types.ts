@@ -10,7 +10,7 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 /**
  * Request parameters type for API requests
  */
-export type RequestParams = Record<string, string | number | boolean | undefined>;
+export type RequestParams = Record<string, string | number | boolean | string[] | undefined>;
 
 /**
  * Error response from the API

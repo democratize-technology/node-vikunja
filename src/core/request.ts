@@ -24,7 +24,7 @@ export function convertParams<T extends object>(params?: T): RequestParams | und
  * @param params - Query parameters
  * @returns Query string with parameters
  */
-export function buildQueryString(params?: Record<string, string | number | boolean | undefined>): string {
+export function buildQueryString(params?: Record<string, string | number | boolean | string[] | undefined>): string {
   if (!params) {
     return '';
   }
@@ -33,7 +33,12 @@ export function buildQueryString(params?: Record<string, string | number | boole
   
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined) {
-      queryParams.append(key, String(value));
+      // Handle array parameters (like sort_by can be passed multiple times)
+      if (Array.isArray(value)) {
+        value.forEach(v => queryParams.append(key, String(v)));
+      } else {
+        queryParams.append(key, String(value));
+      }
     }
   }
   

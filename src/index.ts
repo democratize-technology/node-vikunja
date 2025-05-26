@@ -15,6 +15,7 @@ export * from './core/service.js';
 export * from './core/request.js';
 export * from './core/types.js';
 export * from './core/errors.js';
+export * from './core/params.js';
 
 // Export all services
 export * from './services/index.js';

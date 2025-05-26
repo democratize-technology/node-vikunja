@@ -3,6 +3,7 @@
  */
 import { HttpMethod, ApiError, RequestOptions, RequestParams } from './types.js';
 import { buildQueryString } from './request.js';
+import { transformParams } from './params.js';
 import {
   VikunjaError,
   VikunjaAuthenticationError,
@@ -120,7 +121,9 @@ export abstract class VikunjaService {
     body?: unknown,
     options: RequestOptions = {}
   ): Promise<T> {
-    const url = this.buildUrl(endpoint, options.params);
+    // Transform parameters to match API expectations
+    const transformedParams = transformParams(options.params, endpoint);
+    const url = this.buildUrl(endpoint, transformedParams);
 
     // Build headers
     const headers: HeadersInit = {

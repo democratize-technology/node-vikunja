@@ -35,6 +35,16 @@ export interface SearchParams {
  * Parameters for filtering
  */
 export interface FilterParams {
+  filter?: string;
+  filter_timezone?: string;
+  filter_include_nulls?: boolean;
+}
+
+/**
+ * Legacy filter parameters (for backward compatibility)
+ * @deprecated Use FilterParams with the 'filter' string instead
+ */
+export interface LegacyFilterParams {
   filter_by?: string | string[];
   filter_value?: string | string[];
   filter_comparator?:
@@ -54,7 +64,7 @@ export interface FilterParams {
  */
 export interface SortParams {
   sort_by?: string | string[];
-  order_by?: 'asc' | 'desc';
+  order_by?: 'asc' | 'desc' | string[]; // Can be passed multiple times to match sort_by
 }
 
 /**
