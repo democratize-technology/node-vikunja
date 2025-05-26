@@ -2,7 +2,8 @@
  * Task service for Vikunja API
  */
 import { convertParams } from '../core/request.js';
-import { VikunjaService, VikunjaError, LabelAuthenticationError } from '../core/service.js';
+import { VikunjaService, VikunjaError, VikunjaAuthenticationError, LabelAuthenticationError } from '../core/service.js';
+import type { ErrorResponse } from '../core/errors.js';
 import { FilterParams, Message, Pagination, SearchParams, SortParams } from '../models/common.js';
 import { TaskLabel, Label, GetTaskLabelsParams } from '../models/label.js';
 import {
@@ -243,7 +244,7 @@ export class TaskService extends VikunjaService {
       return await this.request<LabelTaskBulk>(`/tasks/${taskId}/labels/bulk`, 'POST', labels);
     } catch (error) {
       // Check if this is an authentication error (401 or 403)
-      if (error instanceof VikunjaError && (error.status === 401 || error.status === 403)) {
+      if (error instanceof VikunjaError && (error.statusCode === 401 || error.statusCode === 403)) {
         // Retry with alternative headers
         try {
           // Retry with X-API-Token header instead of Authorization Bearer
@@ -254,7 +255,7 @@ export class TaskService extends VikunjaService {
           });
         } catch (retryError) {
           // If still failing, try one more time with lowercase authorization header
-          if (retryError instanceof VikunjaError && (retryError.status === 401 || retryError.status === 403)) {
+          if (retryError instanceof VikunjaError && (retryError.statusCode === 401 || retryError.statusCode === 403)) {
             try {
               return await this.request<LabelTaskBulk>(`/tasks/${taskId}/labels/bulk`, 'POST', labels, {
                 headers: {
@@ -263,13 +264,15 @@ export class TaskService extends VikunjaService {
               });
             } catch (finalError) {
               // All attempts failed - throw specific error
-              if (finalError instanceof VikunjaError && (finalError.status === 401 || finalError.status === 403)) {
+              if (finalError instanceof VikunjaAuthenticationError) {
                 throw new LabelAuthenticationError(
                   `Label operation failed due to authentication issue. ` +
                   `This may occur even with valid tokens. ` +
                   `Original error: ${finalError.message}`,
-                  finalError.code,
-                  finalError.status
+                  finalError.endpoint,
+                  finalError.method,
+                  finalError.statusCode,
+                  finalError.response
                 );
               }
               throw finalError;
@@ -366,21 +369,39 @@ export class TaskService extends VikunjaService {
 
       if (!response.ok) {
         let errorData;
+        let errorResponse: ErrorResponse;
         try {
           errorData = await response.json();
+          errorResponse = {
+            ...errorData
+          };
         } catch {
-          throw new VikunjaError(
-            `API request failed with status ${response.status}`,
-            0,
-            response.status
-          );
+          errorResponse = {
+            message: `API request failed with status ${response.status}`
+          };
         }
 
-        throw new VikunjaError(
-          errorData.message || `API request failed with status ${response.status}`,
-          errorData.code || 0,
-          response.status
-        );
+        const errorMessage = errorResponse.message || `API request failed with status ${response.status}`;
+        const endpoint = `/tasks/${taskId}/attachments`;
+        const method = 'PUT';
+        
+        if (response.status === 401 || response.status === 403) {
+          throw new VikunjaAuthenticationError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else {
+          throw new VikunjaError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        }
       }
 
       return (await response.json()) as Message;
@@ -391,7 +412,13 @@ export class TaskService extends VikunjaService {
       }
 
       // Handle network errors
-      throw new VikunjaError((error as Error).message || 'Network error', 0, 0);
+      throw new VikunjaError(
+        (error as Error).message || 'Network error',
+        `/tasks/${taskId}/attachments`,
+        'PUT',
+        0,
+        { message: (error as Error).message || 'Network error' }
+      );
     }
   }
 
@@ -461,27 +488,27 @@ export class TaskService extends VikunjaService {
     try {
       return await this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask);
     } catch (error) {
-      if (error instanceof VikunjaError && (error.status === 401 || error.status === 403)) {
+      if (error instanceof VikunjaError && (error.statusCode === 401 || error.statusCode === 403)) {
         // Retry with alternative authentication methods
         try {
           return await this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask, {
             headers: { 'X-API-Token': this.token || '' },
           });
         } catch (retryError) {
-          if (retryError instanceof VikunjaError && (retryError.status === 401 || retryError.status === 403)) {
+          if (retryError instanceof VikunjaError && (retryError.statusCode === 401 || retryError.statusCode === 403)) {
             try {
               return await this.request<TaskLabel>(`/tasks/${taskId}/labels`, 'PUT', labelTask, {
                 headers: { 'authorization': `Bearer ${this.token}` },
               });
             } catch (finalError) {
-              if (finalError instanceof VikunjaError && (finalError.status === 401 || finalError.status === 403)) {
+              if (finalError instanceof VikunjaError && (finalError.statusCode === 401 || finalError.statusCode === 403)) {
                 throw new LabelAuthenticationError(
                   `Label operation failed due to authentication issue. ` +
                   `This may occur even with valid tokens. ` +
                   `Original error: ${finalError.message}`,
-                  finalError.code,
-                  finalError.status
-                );
+                  finalError.endpoint, finalError.method,
+                  finalError.statusCode,
+                  finalError.response                );
               }
               throw finalError;
             }
@@ -508,27 +535,27 @@ export class TaskService extends VikunjaService {
     try {
       return await this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE');
     } catch (error) {
-      if (error instanceof VikunjaError && (error.status === 401 || error.status === 403)) {
+      if (error instanceof VikunjaError && (error.statusCode === 401 || error.statusCode === 403)) {
         // Retry with alternative authentication methods
         try {
           return await this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE', undefined, {
             headers: { 'X-API-Token': this.token || '' },
           });
         } catch (retryError) {
-          if (retryError instanceof VikunjaError && (retryError.status === 401 || retryError.status === 403)) {
+          if (retryError instanceof VikunjaError && (retryError.statusCode === 401 || retryError.statusCode === 403)) {
             try {
               return await this.request<Message>(`/tasks/${taskId}/labels/${labelId}`, 'DELETE', undefined, {
                 headers: { 'authorization': `Bearer ${this.token}` },
               });
             } catch (finalError) {
-              if (finalError instanceof VikunjaError && (finalError.status === 401 || finalError.status === 403)) {
+              if (finalError instanceof VikunjaError && (finalError.statusCode === 401 || finalError.statusCode === 403)) {
                 throw new LabelAuthenticationError(
                   `Label operation failed due to authentication issue. ` +
                   `This may occur even with valid tokens. ` +
                   `Original error: ${finalError.message}`,
-                  finalError.code,
-                  finalError.status
-                );
+                  finalError.endpoint, finalError.method,
+                  finalError.statusCode,
+                  finalError.response                );
               }
               throw finalError;
             }

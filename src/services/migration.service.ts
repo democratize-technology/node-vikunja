@@ -1,7 +1,8 @@
 /**
  * Migration service for Vikunja API
  */
-import { VikunjaService, VikunjaError } from '../core/service.js';
+import { VikunjaService, VikunjaError, VikunjaAuthenticationError } from '../core/service.js';
+import { ErrorResponse } from '../core/errors.js';
 import { Message } from '../models/common.js';
 import {
   AuthURL,
@@ -71,21 +72,39 @@ export class MigrationService extends VikunjaService {
 
       if (!response.ok) {
         let errorData;
+        let errorResponse: ErrorResponse;
         try {
           errorData = await response.json();
+          errorResponse = {
+            ...errorData
+          };
         } catch {
-          throw new VikunjaError(
-            `API request failed with status ${response.status}`,
-            0,
-            response.status
-          );
+          errorResponse = {
+            message: `API request failed with status ${response.status}`
+          };
         }
 
-        throw new VikunjaError(
-          errorData.message || `API request failed with status ${response.status}`,
-          errorData.code || 0,
-          response.status
-        );
+        const errorMessage = errorResponse.message || `API request failed with status ${response.status}`;
+        const endpoint = '/migration/ticktick/migrate';
+        const method = 'POST';
+        
+        if (response.status === 401 || response.status === 403) {
+          throw new VikunjaAuthenticationError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else {
+          throw new VikunjaError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        }
       }
 
       return (await response.json()) as Message;
@@ -96,7 +115,13 @@ export class MigrationService extends VikunjaService {
       }
 
       // Handle network errors
-      throw new VikunjaError((error as Error).message || 'Network error', 0, 0);
+      throw new VikunjaError(
+        (error as Error).message || 'Network error',
+        '/migration/ticktick/migrate',
+        'POST',
+        0,
+        { message: (error as Error).message || 'Network error' }
+      );
     }
   }
 
@@ -193,21 +218,39 @@ export class MigrationService extends VikunjaService {
 
       if (!response.ok) {
         let errorData;
+        let errorResponse: ErrorResponse;
         try {
           errorData = await response.json();
+          errorResponse = {
+            ...errorData
+          };
         } catch {
-          throw new VikunjaError(
-            `API request failed with status ${response.status}`,
-            0,
-            response.status
-          );
+          errorResponse = {
+            message: `API request failed with status ${response.status}`
+          };
         }
 
-        throw new VikunjaError(
-          errorData.message || `API request failed with status ${response.status}`,
-          errorData.code || 0,
-          response.status
-        );
+        const errorMessage = errorResponse.message || `API request failed with status ${response.status}`;
+        const endpoint = '/migration/vikunja-file/migrate';
+        const method = 'POST';
+        
+        if (response.status === 401 || response.status === 403) {
+          throw new VikunjaAuthenticationError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else {
+          throw new VikunjaError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        }
       }
 
       return (await response.json()) as Message;
@@ -218,7 +261,13 @@ export class MigrationService extends VikunjaService {
       }
 
       // Handle network errors
-      throw new VikunjaError((error as Error).message || 'Network error', 0, 0);
+      throw new VikunjaError(
+        (error as Error).message || 'Network error',
+        '/migration/vikunja-file/migrate',
+        'POST',
+        0,
+        { message: (error as Error).message || 'Network error' }
+      );
     }
   }
 

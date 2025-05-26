@@ -14,6 +14,7 @@ export * from './models/index.js';
 export * from './core/service.js';
 export * from './core/request.js';
 export * from './core/types.js';
+export * from './core/errors.js';
 
 // Export all services
 export * from './services/index.js';

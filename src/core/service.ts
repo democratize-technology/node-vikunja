@@ -3,29 +3,31 @@
  */
 import { HttpMethod, ApiError, RequestOptions, RequestParams } from './types.js';
 import { buildQueryString } from './request.js';
+import {
+  VikunjaError,
+  VikunjaAuthenticationError,
+  VikunjaNotFoundError,
+  VikunjaValidationError,
+  VikunjaServerError,
+  ErrorResponse
+} from './errors.js';
 
-/**
- * Custom error class for Vikunja API errors
- */
-export class VikunjaError extends Error {
-  public code: number;
-  public status: number;
-
-  constructor(message: string, code: number, status: number) {
-    super(message);
-    this.name = 'VikunjaError';
-    this.code = code;
-    this.status = status;
-  }
-}
+// Re-export errors for backward compatibility
+export {
+  VikunjaError,
+  VikunjaAuthenticationError,
+  VikunjaNotFoundError,
+  VikunjaValidationError,
+  VikunjaServerError
+};
 
 /**
  * Error specific to label authentication failures
  * Label operations may fail with auth errors even with valid tokens
  */
-export class LabelAuthenticationError extends VikunjaError {
-  constructor(message: string, code: number, status: number) {
-    super(message, code, status);
+export class LabelAuthenticationError extends VikunjaAuthenticationError {
+  constructor(message: string, endpoint: string, method: string, statusCode: number, response: ErrorResponse) {
+    super(message, endpoint, method, statusCode, response);
     this.name = 'LabelAuthenticationError';
   }
 }
@@ -141,23 +143,64 @@ export abstract class VikunjaService {
       // Check if the request was successful
       if (!response.ok) {
         let errorData: ApiError;
+        let errorResponse: ErrorResponse;
 
         try {
           errorData = (await response.json()) as ApiError;
+          errorResponse = {
+            ...errorData
+          };
         } catch {
           // If parsing JSON fails, use a generic error message
-          throw new VikunjaError(
-            `API request failed with status ${response.status}`,
-            0,
-            response.status
-          );
+          errorResponse = {
+            message: `API request failed with status ${response.status}`
+          };
         }
 
-        throw new VikunjaError(
-          errorData.message || `API request failed with status ${response.status}`,
-          errorData.code || 0,
-          response.status
-        );
+        // Throw appropriate error based on status code
+        const errorMessage = errorResponse.message || `API request failed with status ${response.status}`;
+        
+        if (response.status === 401 || response.status === 403) {
+          throw new VikunjaAuthenticationError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else if (response.status === 404) {
+          throw new VikunjaNotFoundError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else if (response.status === 400) {
+          throw new VikunjaValidationError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else if (response.status >= 500) {
+          throw new VikunjaServerError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else {
+          throw new VikunjaError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        }
       }
 
       // Parse response based on responseType option
@@ -183,7 +226,13 @@ export abstract class VikunjaService {
       }
 
       // Handle network errors
-      throw new VikunjaError((error as Error).message || 'Network error', 0, 0);
+      throw new VikunjaError(
+        (error as Error).message || 'Network error',
+        endpoint,
+        method,
+        0,
+        { message: (error as Error).message || 'Network error' }
+      );
     }
   }
 }

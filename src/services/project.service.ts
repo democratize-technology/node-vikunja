@@ -1,7 +1,8 @@
 /**
  * Project service for Vikunja API
  */
-import { VikunjaService, VikunjaError } from '../core/service.js';
+import { VikunjaService, VikunjaError, VikunjaAuthenticationError } from '../core/service.js';
+import { ErrorResponse } from '../core/errors.js';
 import { LinkSharing, GetLinkSharesParams } from '../models/share.js';
 import { Message, Pagination, SearchParams } from '../models/common.js';
 import {
@@ -257,21 +258,39 @@ export class ProjectService extends VikunjaService {
 
       if (!response.ok) {
         let errorData;
+        let errorResponse: ErrorResponse;
         try {
           errorData = await response.json();
+          errorResponse = {
+            ...errorData
+          };
         } catch {
-          throw new VikunjaError(
-            `API request failed with status ${response.status}`,
-            0,
-            response.status
-          );
+          errorResponse = {
+            message: `API request failed with status ${response.status}`
+          };
         }
 
-        throw new VikunjaError(
-          errorData.message || `API request failed with status ${response.status}`,
-          errorData.code || 0,
-          response.status
-        );
+        const errorMessage = errorResponse.message || `API request failed with status ${response.status}`;
+        const endpoint = `/projects/${projectId}/backgrounds/upload`;
+        const method = 'PUT';
+        
+        if (response.status === 401 || response.status === 403) {
+          throw new VikunjaAuthenticationError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        } else {
+          throw new VikunjaError(
+            errorMessage,
+            endpoint,
+            method,
+            response.status,
+            errorResponse
+          );
+        }
       }
 
       return (await response.json()) as Message;
@@ -282,7 +301,13 @@ export class ProjectService extends VikunjaService {
       }
 
       // Handle network errors
-      throw new VikunjaError((error as Error).message || 'Network error', 0, 0);
+      throw new VikunjaError(
+        (error as Error).message || 'Network error',
+        `/projects/${projectId}/backgrounds/upload`,
+        'PUT',
+        0,
+        { message: (error as Error).message || 'Network error' }
+      );
     }
   }
 
