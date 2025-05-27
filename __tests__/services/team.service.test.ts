@@ -98,8 +98,10 @@ describe('TeamService', () => {
       await expect(service.getTeams()).rejects.toThrow(VikunjaError);
       await expect(service.getTeams()).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 500
+        statusCode: 500,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });
@@ -186,8 +188,10 @@ describe('TeamService', () => {
       await expect(service.createTeam(newTeam)).rejects.toThrow(VikunjaError);
       await expect(service.createTeam(newTeam)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 400
+        statusCode: 400,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });
@@ -255,8 +259,10 @@ describe('TeamService', () => {
       await expect(service.deleteTeam(999)).rejects.toThrow(VikunjaError);
       await expect(service.deleteTeam(999)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 404
+        statusCode: 404,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
     
@@ -284,8 +290,10 @@ describe('TeamService', () => {
       await expect(service.deleteTeam(1)).rejects.toThrow(VikunjaError);
       await expect(service.deleteTeam(1)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 403
+        statusCode: 403,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
     
@@ -313,8 +321,10 @@ describe('TeamService', () => {
       await expect(service.deleteTeam(-1)).rejects.toThrow(VikunjaError);
       await expect(service.deleteTeam(-1)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 400
+        statusCode: 400,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
     
@@ -342,8 +352,10 @@ describe('TeamService', () => {
       await expect(service.deleteTeam(2)).rejects.toThrow(VikunjaError);
       await expect(service.deleteTeam(2)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 409
+        statusCode: 409,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });

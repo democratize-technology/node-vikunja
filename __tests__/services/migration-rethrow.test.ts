@@ -40,7 +40,7 @@ describe('MigrationService - Error Rethrowing', () => {
         expect((error as VikunjaError).message).toBe(
           'API request failed with status unknown error'
         );
-        expect((error as VikunjaError).code).toBe(0);
+        expect((error as VikunjaError).response).toEqual({});
       }
     });
 
@@ -58,7 +58,7 @@ describe('MigrationService - Error Rethrowing', () => {
         fail('Expected an error to be thrown');
       } catch (error) {
         expect((error as VikunjaError).message).toBe('Network error');
-        expect((error as VikunjaError).code).toBe(0);
+        expect((error as VikunjaError).response).toEqual({ message: 'Network error' });
       }
     });
   });

@@ -128,7 +128,7 @@ describe('TaskService', () => {
       // Verify that fetch was called with the correct arguments including query params
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
-        `${baseUrl}/tasks/all?page=1&per_page=10&s=search+term&sort_by=title&order_by=asc&filter_by=done&filter_value=false&filter_comparator=equals`,
+        `${baseUrl}/tasks/all?page=1&per_page=10&s=search+term&sort_by=title&order_by=asc&filter=done+equals+false`,
         expect.anything()
       );
     });
@@ -145,10 +145,7 @@ describe('TaskService', () => {
       ];
       
       const params = {
-        filter_by: ['done', 'priority'],
-        filter_value: ['false', '1'],
-        filter_comparator: 'equals' as const,
-        filter_concat: 'and' as const
+        filter: 'done equals false and priority equals 1'
       };
       
       // Mock the fetch response
@@ -173,7 +170,7 @@ describe('TaskService', () => {
       // Verify that fetch was called with the correct arguments including query params
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
-        `${baseUrl}/tasks/all?filter_by=done%2Cpriority&filter_value=false%2C1&filter_comparator=equals&filter_concat=and`,
+        `${baseUrl}/tasks/all?filter=done+equals+false+and+priority+equals+1`,
         expect.anything()
       );
     });
@@ -217,7 +214,7 @@ describe('TaskService', () => {
       // Verify that fetch was called with the correct arguments including query params
       expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch).toHaveBeenCalledWith(
-        `${baseUrl}/tasks/all?filter_by=due_date&filter_value=&filter_include_nulls=true`,
+        `${baseUrl}/tasks/all?filter_include_nulls=true&filter=due_date+equals+`,
         expect.anything()
       );
     });
@@ -703,8 +700,8 @@ describe('TaskService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
     
@@ -722,8 +719,8 @@ describe('TaskService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe('Network error');
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(0);
+        expect((error as VikunjaError).response).toEqual({ message: 'Network error' });
+        expect((error as VikunjaError).statusCode).toBe(0);
       }
     });
   });

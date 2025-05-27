@@ -79,8 +79,8 @@ describe('MigrationService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });
@@ -153,8 +153,8 @@ describe('MigrationService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });
@@ -221,8 +221,8 @@ describe('MigrationService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });
@@ -327,8 +327,8 @@ describe('MigrationService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });

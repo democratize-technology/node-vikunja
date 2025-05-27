@@ -79,8 +79,8 @@ describe('MigrationService - Microsoft Todo', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response).toEqual(errorResponse);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });
@@ -153,8 +153,8 @@ describe('MigrationService - Microsoft Todo', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response).toEqual(errorResponse);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
     
@@ -186,8 +186,8 @@ describe('MigrationService - Microsoft Todo', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(0); // Default value when code is missing
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response).toEqual({ message: errorResponse.message });
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
     
@@ -220,8 +220,8 @@ describe('MigrationService - Microsoft Todo', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(`API request failed with status 500`); // Default message
-        expect((error as VikunjaError).code).toBe(500);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response).toEqual(errorResponse);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });
@@ -288,8 +288,8 @@ describe('MigrationService - Microsoft Todo', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response).toEqual(errorResponse);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
   });

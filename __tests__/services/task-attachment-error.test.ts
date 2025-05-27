@@ -49,8 +49,8 @@ describe('TaskService - Attachment Upload Error Handling', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe('API request failed with status 500');
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).response).toEqual({ message: 'API request failed with status 500' });
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
     
@@ -73,8 +73,8 @@ describe('TaskService - Attachment Upload Error Handling', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe('Network connection failed');
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(0);
+        expect((error as VikunjaError).response).toEqual({ message: 'Network connection failed' });
+        expect((error as VikunjaError).statusCode).toBe(0);
       }
     });
   });

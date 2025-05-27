@@ -118,9 +118,12 @@ describe('TaskService - Base Methods', () => {
       
       // Check if all query parameters are included in the URL
       const url = (global.fetch as jest.Mock).mock.calls[0][0];
-      Object.entries(params).forEach(([key, value]) => {
-        expect(url).toContain(`${key}=${value}`);
-      });
+      expect(url).toContain('page=2');
+      expect(url).toContain('per_page=10');
+      expect(url).toContain('s=test');
+      expect(url).toContain('sort_by=title');
+      expect(url).toContain('order_by=asc');
+      expect(url).toContain('filter=done+equals+false');
     });
   });
   
@@ -469,8 +472,8 @@ describe('TaskService - Base Methods', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
@@ -505,8 +508,8 @@ describe('TaskService - Base Methods', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
     
@@ -543,8 +546,8 @@ describe('TaskService - Base Methods', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });

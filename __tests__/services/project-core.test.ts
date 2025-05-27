@@ -109,7 +109,7 @@ describe('ProjectService - Core Operations', () => {
 
       // Build expected URL with query params
       const expectedUrlWithParams = expect.stringContaining(
-        `${mockBaseUrl}/projects?page=1&per_page=10&s=project&is_archived=false&sort_by=title&order_by=asc&filter_by=title&filter_value=Project&filter_comparator=like`
+        `${mockBaseUrl}/projects?page=1&per_page=10&s=project&is_archived=false&sort_by=title&order_by=asc&filter=title+like+Project`
       );
 
       // Verify request with query params
@@ -155,8 +155,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(403);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(403);
       }
     });
   });
@@ -240,8 +240,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
@@ -316,8 +316,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
   });
@@ -403,8 +403,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(403);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(403);
       }
     });
   });
@@ -475,8 +475,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
   });
@@ -618,8 +618,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
   });
@@ -702,8 +702,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
   });
@@ -798,8 +798,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(403);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(403);
       }
     });
   });
@@ -874,8 +874,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(404);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(404);
       }
     });
   });
@@ -895,8 +895,8 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe('Network error');
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(0);
+        expect((error as VikunjaError).response).toEqual({ message: 'Network error' });
+        expect((error as VikunjaError).statusCode).toBe(0);
       }
     });
 
@@ -923,7 +923,7 @@ describe('ProjectService - Core Operations', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toContain('API request failed with status 500');
-        expect((error as VikunjaError).status).toBe(500);
+        expect((error as VikunjaError).statusCode).toBe(500);
       }
     });
 

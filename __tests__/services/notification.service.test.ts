@@ -109,8 +109,10 @@ describe('NotificationService', () => {
       await expect(service.getNotifications()).rejects.toThrow(VikunjaError);
       await expect(service.getNotifications()).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 403
+        statusCode: 403,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });
@@ -178,8 +180,10 @@ describe('NotificationService', () => {
       await expect(service.markAllAsRead()).rejects.toThrow(VikunjaError);
       await expect(service.markAllAsRead()).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 500
+        statusCode: 500,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });
@@ -256,8 +260,10 @@ describe('NotificationService', () => {
       await expect(service.markNotification(notificationId)).rejects.toThrow(VikunjaError);
       await expect(service.markNotification(notificationId)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 404
+        statusCode: 404,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });

@@ -86,8 +86,10 @@ describe('ProjectService - Background Operations', () => {
       await expect(projectService.getProjectBackground(projectId)).rejects.toThrow(VikunjaError);
       await expect(projectService.getProjectBackground(projectId)).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 404,
+        statusCode: 404,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });
@@ -218,8 +220,10 @@ describe('ProjectService - Background Operations', () => {
         projectService.setUnsplashBackground(projectId, backgroundImage)
       ).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 400,
+        statusCode: 400,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });
@@ -305,8 +309,10 @@ describe('ProjectService - Background Operations', () => {
         projectService.uploadProjectBackground(projectId, formData)
       ).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 400,
+        statusCode: 400,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });

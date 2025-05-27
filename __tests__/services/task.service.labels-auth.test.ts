@@ -149,7 +149,7 @@ describe('TaskService - Label Authentication Error Handling', () => {
         expect(error).toBeInstanceOf(LabelAuthenticationError);
         expect((error as LabelAuthenticationError).message).toContain('authentication issue');
         expect((error as LabelAuthenticationError).message).toContain('may occur even with valid tokens');
-        expect((error as LabelAuthenticationError).status).toBe(403);
+        expect((error as LabelAuthenticationError).statusCode).toBe(403);
       }
     });
 

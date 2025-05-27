@@ -83,8 +83,10 @@ describe('SystemService', () => {
       await expect(service.getInfo()).rejects.toThrow(VikunjaError);
       await expect(service.getInfo()).rejects.toMatchObject({
         message: errorResponse.message,
-        code: errorResponse.code,
-        status: 500
+        statusCode: 500,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
       });
     });
   });

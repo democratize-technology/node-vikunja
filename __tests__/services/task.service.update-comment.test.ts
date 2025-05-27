@@ -93,10 +93,12 @@ describe('TaskService - Update Comment', () => {
       // Call the method and expect it to throw
       await expect(taskService.updateTaskComment(taskId, commentId, comment))
         .rejects.toMatchObject({
-          message: errorResponse.message,
-          code: errorResponse.code,
-          status: 404
-        });
+        message: errorResponse.message,
+        statusCode: 404,
+        response: expect.objectContaining({
+          code: errorResponse.code
+        })
+      });
     });
   });
 });

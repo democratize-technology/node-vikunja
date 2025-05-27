@@ -84,8 +84,7 @@ describe('AuthService', () => {
       await expect(authService.renewToken()).rejects.toThrow(VikunjaError);
       await expect(authService.renewToken()).rejects.toMatchObject({
         message: errorMessage,
-        code: 401,
-        status: 401
+        statusCode: 401
       });
     });
      
@@ -98,8 +97,7 @@ describe('AuthService', () => {
       await expect(authService.renewToken()).rejects.toThrow(VikunjaError);
       await expect(authService.renewToken()).rejects.toMatchObject({
         message: 'Network error',
-        code: 0,
-        status: 0
+        statusCode: 0
       });
     });
   });

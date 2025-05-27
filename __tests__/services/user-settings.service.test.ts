@@ -97,8 +97,8 @@ describe('SettingsService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(401);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(401);
       }
     });
   });
@@ -182,8 +182,8 @@ describe('SettingsService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
@@ -269,8 +269,8 @@ describe('SettingsService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
 
@@ -301,8 +301,8 @@ describe('SettingsService', () => {
         expect((error as VikunjaError).message).toBe(
           `API request failed with status ${mockResponse.status}`
         );
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response).toEqual({ message: `API request failed with status ${mockResponse.status}` });
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
 
@@ -324,8 +324,8 @@ describe('SettingsService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(networkError.message);
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(0);
+        expect((error as VikunjaError).response).toEqual({ message: networkError.message });
+        expect((error as VikunjaError).statusCode).toBe(0);
       }
     });
 
@@ -405,8 +405,8 @@ describe('SettingsService', () => {
         expect((error as VikunjaError).message).toBe(
           `API request failed with status ${mockResponse.status}`
         );
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(mockResponse.status);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(mockResponse.status);
       }
     });
 
@@ -442,8 +442,8 @@ describe('SettingsService', () => {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
         // Should use the fallback code
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(mockResponse.status);
+        expect((error as VikunjaError).response).toEqual({ message: errorResponse.message });
+        expect((error as VikunjaError).statusCode).toBe(mockResponse.status);
       }
     });
 
@@ -466,8 +466,8 @@ describe('SettingsService', () => {
         expect(error).toBeInstanceOf(VikunjaError);
         // Should use the fallback message
         expect((error as VikunjaError).message).toBe('Network error');
-        expect((error as VikunjaError).code).toBe(0);
-        expect((error as VikunjaError).status).toBe(0);
+        expect((error as VikunjaError).response).toEqual({ message: 'Network error' });
+        expect((error as VikunjaError).statusCode).toBe(0);
       }
     });
   });
@@ -555,8 +555,8 @@ describe('SettingsService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
@@ -641,8 +641,8 @@ describe('SettingsService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(VikunjaError);
         expect((error as VikunjaError).message).toBe(errorResponse.message);
-        expect((error as VikunjaError).code).toBe(errorResponse.code);
-        expect((error as VikunjaError).status).toBe(400);
+        expect((error as VikunjaError).response.code).toBe(errorResponse.code);
+        expect((error as VikunjaError).statusCode).toBe(400);
       }
     });
   });
